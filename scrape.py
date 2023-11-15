@@ -3,6 +3,10 @@
 from dataclasses import dataclass
 from pybliometrics.scopus import AbstractRetrieval, ScopusSearch
 import bibtexparser
+from thefuzz import process
+import multiprocessing
+import pandas as pd
+
 
 #%%
 
@@ -79,11 +83,12 @@ print(len(ids), ids[:5])
 
 #%%
 bibtex_str = ""
-for single_id in ids[:5]:
-    ab = AbstractRetrieval(single_id)
+for single_id in ids[:8]:
+    ab = AbstractRetrieval(single_id, view='FULL', id_type='eid')
     bibtex_str += ab.get_bibtex()
 
 
+print(bibtex_str)
 #%%
 library = bibtexparser.parse_string(bibtex_str)
 bibtexparser.write_file("library.bib", library)
